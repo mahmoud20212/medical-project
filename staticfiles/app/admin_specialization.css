@@ -1,0 +1,127 @@
+.icon-radio-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 8px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 16px 0 16px;
+}
+
+.icon-radio-option {
+	display: inline-flex;
+	cursor: pointer;
+	flex: 0 0 auto;
+}
+
+.icon-radio-option input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.icon-radio-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	min-height: 56px;
+	min-width: 56px;
+	padding: 6px 4px;
+	border: 2px solid #d1d5db;
+	border-radius: 8px;
+	background: #fff;
+	transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.icon-radio-symbol {
+	font-size: 18px;
+	line-height: 1;
+	color: #1e3a8a;
+}
+
+.icon-radio-label {
+	font-size: 9px;
+	font-weight: 600;
+	text-align: center;
+	color: #111827;
+	max-width: 50px;
+	line-height: 1.1;
+}
+
+.icon-radio-option:hover .icon-radio-card {
+	border-color: #2563eb;
+	box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12);
+	transform: translateY(-1px);
+}
+
+.icon-radio-option input:checked + .icon-radio-card {
+	border-color: #1d4ed8;
+	background: #eff6ff;
+	box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	.icon-radio-grid {
+		gap: 6px;
+		margin-top: 6px;
+	}
+
+  .icon-radio-grid label {
+    width: auto !important;
+  }
+
+  .icon-radio-label {
+    display: none;
+  }
+
+	.icon-radio-card {
+		min-height: 48px;
+		min-width: 48px;
+		padding: 4px 3px;
+		gap: 3px;
+		border-radius: 6px;
+	}
+
+	.icon-radio-symbol {
+		font-size: 16px;
+	}
+
+	.icon-radio-label {
+		font-size: 8px;
+		max-width: 45px;
+	}
+}
+
+@media (max-width: 480px) {
+	.icon-radio-grid {
+		gap: 4px;
+		margin-top: 4px;
+	}
+
+	.icon-radio-card {
+		min-height: 40px;
+		min-width: 40px;
+		padding: 3px 2px;
+		gap: 2px;
+		border-width: 1px;
+		border-radius: 4px;
+	}
+
+	.icon-radio-symbol {
+		font-size: 14px;
+	}
+
+	.icon-radio-label {
+		font-size: 7px;
+		max-width: 38px;
+	}
+
+	.icon-radio-option:hover .icon-radio-card {
+		box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+		transform: translateY(0px);
+	}
+}
+

@@ -1,0 +1,91 @@
+module.exports = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        background: "#faf9fb",
+        "surface-container-highest": "#e3e2e5",
+        "inverse-primary": "#b0c8eb",
+        "secondary-fixed-dim": "#c6c6c7",
+        tertiary: "#0c1011",
+        "surface-container-lowest": "#ffffff",
+        "surface-bright": "#faf9fb",
+        "on-tertiary-fixed": "#191c1e",
+        "on-secondary-container": "#616363",
+        "on-error-container": "#93000a",
+        "tertiary-container": "#212527",
+        "on-secondary-fixed": "#1a1c1c",
+        "on-tertiary": "#ffffff",
+        "primary-fixed-dim": "#b0c8eb",
+        "on-error": "#ffffff",
+        "surface-container-low": "#f5f3f6",
+        "secondary-fixed": "#e2e2e2",
+        "surface-dim": "#dbd9dc",
+        "on-surface": "#1b1c1e",
+        "on-surface-variant": "#43474d",
+        "surface-tint": "#49607e",
+        "on-primary-fixed": "#001c37",
+        "outline-variant": "#c4c6ce",
+        "tertiary-fixed-dim": "#c4c7c9",
+        "primary-fixed": "#d2e4ff",
+        "tertiary-fixed": "#e0e3e5",
+        "error-container": "#ffdad6",
+        "on-tertiary-fixed-variant": "#444749",
+        "surface-variant": "#e3e2e5",
+        "on-tertiary-container": "#898c8e",
+        secondary: "#5d5f5f",
+        "surface-container-high": "#e9e8ea",
+        "surface-container": "#efedf0",
+        "primary-container": "#0a2540",
+        "inverse-on-surface": "#f2f0f3",
+        outline: "#74777e",
+        "on-primary-fixed-variant": "#314865",
+        "on-primary-container": "#768dad",
+        "on-primary": "#ffffff",
+        surface: "#faf9fb",
+        "on-secondary-fixed-variant": "#454747",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#dfe0e0",
+        "on-background": "#1b1c1e",
+        primary: "#000f22",
+        "inverse-surface": "#2f3033",
+        error: "#ba1a1a"
+      },
+      borderRadius: {
+        DEFAULT: "0.125rem",
+        lg: "0.25rem",
+        xl: "0.5rem",
+        full: "0.75rem"
+      },
+      spacing: {
+        gutter: "24px",
+        base: "4px",
+        xl: "48px",
+        margin: "auto",
+        "grid-columns": "12",
+        xs: "8px",
+        lg: "32px",
+        sm: "16px",
+        md: "24px"
+      },
+      fontFamily: {
+        "headline-md": ["Tajawal"],
+        "label-md": ["Tajawal"],
+        "body-md": ["Tajawal"],
+        "headline-lg": ["Tajawal"],
+        "headline-xl": ["Tajawal"],
+        "body-lg": ["Tajawal"],
+        "label-sm": ["Tajawal"]
+      },
+      fontSize: {
+        "headline-md": ["24px", { lineHeight: "1.4", fontWeight: "600" }],
+        "label-md": ["14px", { lineHeight: "1.2", letterSpacing: "0.01em", fontWeight: "500" }],
+        "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+        "headline-lg": ["32px", { lineHeight: "1.3", fontWeight: "600" }],
+        "headline-xl": ["40px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+        "label-sm": ["12px", { lineHeight: "1.2", fontWeight: "600" }]
+      }
+    }
+  }
+};

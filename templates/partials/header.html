@@ -1,0 +1,105 @@
+<!-- TopAppBar -->
+<header
+  class="bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50"
+>
+  <div
+    class="flex justify-between items-center w-full px-8 h-16 max-w-7xl mx-auto"
+  >
+    <a
+      href="{% url "index" %}"
+      class="lg:text-lg font-bold text-blue-900 dark:text-blue-50 uppercase tracking-wide"
+    >
+      {% if site_settings %}{{ site_settings.site_name }}{% else %}كلية العلوم الطبية التطبيقية{% endif %}
+    </a>
+    <nav
+      class="hidden md:flex items-center space-x-reverse space-x-8 font-public-sans text-sm font-medium tracking-tight"
+    >
+      <a
+        class="nav-link nav-link-inactive inline-flex items-center gap-1"
+        data-nav-link="home"
+        href="{% url "index" %}"
+        ><span class="material-symbols-outlined text-[18px]">home</span>الرئيسية</a
+      >
+      {% if site_settings.show_specializations %}
+      <a
+        class="nav-link nav-link-inactive inline-flex items-center gap-1"
+        data-nav-link="specializations"
+        href="/#specializations"
+        ><span class="material-symbols-outlined text-[18px]">school</span>التخصصات</a
+      >
+      {% endif %}
+      {% if site_settings.show_team %}
+      <a
+        class="nav-link nav-link-inactive inline-flex items-center gap-1"
+        data-nav-link="team"
+        href="/#team"
+        ><span class="material-symbols-outlined text-[18px]">groups</span>فريق العمل</a
+      >
+      {% endif %}
+      <a
+        class="mr-8 nav-link nav-link-inactive inline-flex items-center gap-1"
+        data-nav-link="resources"
+        href="{% url "resources" %}"
+        ><span class="material-symbols-outlined text-[18px]">menu_book</span>المصادر</a
+      >
+      {% if user.is_authenticated and user.is_staff %}
+        <a
+          class="mr-8 nav-link nav-link-inactive inline-flex items-center gap-1"
+          data-nav-link="admin"
+          href="/admin/"
+          title="لوحة التحكم"
+          ><span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>لوحة التحكم</a
+        >
+      {% endif %}
+    </nav>
+    <div class="flex md:hidden items-center space-x-reverse space-x-4">
+      <button
+        id="mobile-menu-toggle"
+        class="md:hidden p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-all"
+        aria-label="toggle menu"
+      >
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile Nav -->
+  <div
+    id="mobile-nav"
+    class="hidden md:hidden bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 px-8 py-4 space-y-3"
+  >
+    <a class="w-full py-2 mobile-nav-link mobile-nav-link-inactive inline-flex items-center gap-2" data-mobile-nav-link="home" href="{% url "index" %}"
+      ><span class="material-symbols-outlined text-[20px]">home</span>الرئيسية</a
+    >
+    {% if site_settings.show_specializations %}
+    <a
+      class="w-full py-2 mobile-nav-link mobile-nav-link-inactive inline-flex items-center gap-2"
+      data-mobile-nav-link="specializations"
+      href="/#specializations"
+      ><span class="material-symbols-outlined text-[20px]">school</span>التخصصات</a
+    >
+    {% endif %}
+    {% if site_settings.show_team %}
+    <a
+      class="w-full py-2 mobile-nav-link mobile-nav-link-inactive inline-flex items-center gap-2"
+      data-mobile-nav-link="team"
+      href="/#team"
+      ><span class="material-symbols-outlined text-[20px]">groups</span>فريق العمل</a
+    >
+    {% endif %}
+    <a
+      class="w-full py-2 mobile-nav-link mobile-nav-link-inactive inline-flex items-center gap-2"
+      data-mobile-nav-link="resources"
+      href="{% url "resources" %}"
+      ><span class="material-symbols-outlined text-[20px]">menu_book</span>المصادر</a
+    >
+    {% if user.is_authenticated and user.is_staff %}
+      <a
+        class="w-full py-2 mobile-nav-link mobile-nav-link-inactive inline-flex items-center gap-2"
+        data-mobile-nav-link="admin"
+        href="/admin/"
+        title="لوحة التحكم"
+        ><span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>لوحة التحكم</a
+      >
+    {% endif %}
+  </div>
+</header>

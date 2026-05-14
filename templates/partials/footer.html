@@ -1,0 +1,24 @@
+<!-- Footer -->
+<footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 mt-auto">
+  <div class="w-full py-8 px-8 flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto">
+    <div class="flex flex-col md:items-start items-center mb-2 md:mb-0">
+      <div class="text-blue-900 font-bold">
+        {% if site_settings %}
+          {{ site_settings.site_name }}
+        {% else %}
+          كلية العلوم الطبية التطبيقية
+        {% endif %}
+      </div>
+      {% if site_settings and site_settings.site_tagline %}
+      <div class="font-public-sans text-xs text-slate-500 mt-2">{{ site_settings.site_tagline }}</div>
+      {% endif %}
+    </div>
+
+    <div class="text-slate-500 text-sm mt-2 md:mt-0">
+      صُنع بحب لدعم مسيرة التعلم © <script>document.write(new Date().getFullYear())</script>
+    </div>
+  </div>
+  <div class="border-gray-300 border-t text-center py-3 text-slate-500">
+    <span class="text-xs">Created By Eng. Mahmoud Ouda</span>
+  </div>
+</footer>

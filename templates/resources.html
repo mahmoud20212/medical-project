@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="flex flex-1 max-w-7xl mx-auto w-full">
+    <!-- Main Content -->
+    <main class="flex-1 p-8 bg-background overflow-y-auto">
+      <!-- Breadcrumb Navigation -->
+      <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-slate-500 mb-8 font-label-sm">
+        <a class="hover:text-primary transition-colors" href="{% url 'index' %}">الرئيسية</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_left</span>
+        <span class="text-primary font-bold">المصادر</span>
+      </nav>
+      <!-- Page Header -->
+      <div class="mb-10">
+        <h1 class="font-headline-xl text-primary mb-2">جميع التخصصات</h1>
+        <p class="text-body-lg text-secondary">
+          تصفح كافة التخصصات وحمل المحاضرات والمصادر الخاصة بكل تخصص بسهولة.
+        </p>
+      </div>
+      <!-- عرض اكثر من تخصص -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for specialization in specializations %}
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden group hover:border-primary transition-all duration-300">
+          <div class="h-32 bg-primary-container relative">
+            <img class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="" src="{{ specialization.get_image_url }}" />
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="material-symbols-outlined text-on-primary-container text-4xl" data-icon="{{ specialization.icon }}">{{ specialization.icon }}</span>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-headline-md text-primary mb-2">{{ specialization.name }}</h3>
+            <div class="space-y-2 text-label-md text-secondary">
+              <p class="flex items-center justify-between gap-3">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[18px] text-primary" data-icon="menu_book">menu_book</span>
+                  <span>عدد المقررات</span>
+                </span>
+                <span class="font-bold text-primary">{{ specialization.course_count }}</span>
+              </p>
+              <p class="flex items-center justify-between gap-3">
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[18px] text-primary" data-icon="folder">folder</span>
+                  <span>عدد الموارد</span>
+                </span>
+                <span class="font-bold text-primary">{{ specialization.resource_count }}</span>
+              </p>
+            </div>
+            <a href="{% url 'specialization_detail' specialization.slug %}" class="text-center block w-full mt-6 py-2 border border-primary text-primary font-bold rounded hover:bg-primary hover:text-white transition-all text-label-md cursor-pointer">عرض الموارد</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% if specializations.paginator.num_pages > 1 %}
+        <nav aria-label="Pagination" class="mt-8 flex flex-wrap items-center justify-center gap-2">
+          {% if specializations.has_previous %}
+            <a href="?{% if page_query %}{{ page_query }}&amp;{% endif %}page={{ specializations.previous_page_number }}" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50">
+              السابق
+            </a>
+          {% endif %}
+          {% for page_number in specializations.paginator.page_range %}
+            <a href="?{% if page_query %}{{ page_query }}&amp;{% endif %}page={{ page_number }}" class="inline-flex h-11 min-w-11 items-center justify-center rounded-lg border px-4 py-2 text-sm font-semibold transition-colors {% if specializations.number == page_number %}border-primary bg-primary text-white{% else %}border-slate-300 text-slate-700 hover:bg-slate-50{% endif %}">
+              {{ page_number }}
+            </a>
+          {% endfor %}
+          {% if specializations.has_next %}
+            <a href="?{% if page_query %}{{ page_query }}&amp;{% endif %}page={{ specializations.next_page_number }}" class="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50">
+              التالي
+            </a>
+          {% endif %}
+        </nav>
+      {% endif %}
+      <!-- Additional Resources Section -->
+      {% comment %} <section class="mt-16 bg-surface-container-low rounded-xl p-8 border border-slate-200">
+        <div class="flex items-center gap-4 mb-6">
+          <span class="material-symbols-outlined text-primary text-3xl" data-icon="info">info</span>
+          <div>
+            <h2 class="font-headline-md text-primary">إرشادات عامة</h2>
+            <p class="text-label-md text-secondary">معلومات هامة لطلاب قسم الأشعة في جميع المستويات</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white p-4 rounded border border-slate-100 flex items-start gap-4">
+            <span class="material-symbols-outlined text-blue-900" data-icon="book">book</span>
+            <div>
+              <p class="font-bold text-xs mb-1">دليل الطالب</p>
+              <p class="text-[10px] text-slate-500">تحميل الدليل التعريفي للسنة الدراسية الحالية.</p>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded border border-slate-100 flex items-start gap-4">
+            <span class="material-symbols-outlined text-blue-900" data-icon="calendar_month">calendar_month</span>
+            <div>
+              <p class="font-bold text-xs mb-1">الجدول الأكاديمي</p>
+              <p class="text-[10px] text-slate-500">مواعيد الاختبارات والمحاضرات النهائية.</p>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded border border-slate-100 flex items-start gap-4">
+            <span class="material-symbols-outlined text-blue-900" data-icon="contact_support">contact_support</span>
+            <div>
+              <p class="font-bold text-xs mb-1">تواصل مع المرشد</p>
+              <p class="text-[10px] text-slate-500">حجز موعد مع المرشد الأكاديمي للقسم.</p>
+            </div>
+          </div>
+        </div>
+      </section> {% endcomment %}
+    </main>
+  </div>
+{% endblock %}

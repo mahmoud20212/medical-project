@@ -1,0 +1,398 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+  <style>
+    @keyframes skeletonShimmer {
+      0% { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+    .skeleton-pulse {
+      background: linear-gradient(90deg, rgba(255,255,255,0.12) 25%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0.12) 75%);
+      background-size: 800px 100%;
+      animation: skeletonShimmer 1.6s infinite linear;
+    }
+    .logo-showcase {
+      position: relative;
+      width: 170px;
+      height: 210px;
+      perspective: 1200px;
+      isolation: isolate;
+    }
+    
+    .logo-glow {
+      position: absolute;
+      inset: 12% 10%;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(147, 197, 253, 0.45) 0%, rgba(30, 64, 175, 0.18) 40%, rgba(30, 64, 175, 0) 70%);
+      filter: blur(14px);
+      z-index: 1;
+      animation: glowPulse 4.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+    
+    .logo-card {
+      position: absolute;
+      inset: 0;
+      border-radius: 1rem;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.12));
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.2);
+      transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 350ms ease, border-color 350ms ease;
+      will-change: transform;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      animation: floatCard 6s ease-in-out infinite;
+      overflow: hidden;
+    }
+    
+    .logo-card::after {
+      content: '';
+      position: absolute;
+      top: -45%;
+      left: -65%;
+      width: 70%;
+      height: 190%;
+      background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.45), transparent 80%);
+      transform: rotate(15deg);
+      transition: transform 650ms ease;
+      pointer-events: none;
+    }
+    
+    .logo-card[data-card='1'] {
+      z-index: 12;
+      transform: translate3d(-6px, 0, 0) rotateZ(-6deg);
+    }
+    
+    .logo-card[data-card='2'] {
+      z-index: 8;
+      transform: translate3d(18px, 24px, 0) rotateZ(7deg);
+      animation-delay: -2.8s;
+    }
+    
+    .logo-card.active {
+      z-index: 30 !important;
+      box-shadow: 0 20px 42px rgba(15, 23, 42, 0.35);
+      border-color: rgba(191, 219, 254, 0.9);
+    }
+    
+    .logo-card.active::after {
+      transform: translateX(165%) rotate(15deg);
+    }
+    
+    .logo-showcase.spread .logo-card[data-card='1'] {
+      transform: translate3d(-24px, -16px, 48px) rotateZ(-11deg) scale(1.03);
+    }
+    
+    .logo-showcase.spread .logo-card[data-card='2'] {
+      transform: translate3d(34px, 28px, 48px) rotateZ(11deg) scale(1.03);
+    }
+    
+    @keyframes floatCard {
+      0%,
+      100% {
+        translate: 0 0;
+      }
+      50% {
+        translate: 0 -6px;
+      }
+    }
+    
+    @keyframes glowPulse {
+      0%,
+      100% {
+        opacity: 0.7;
+        transform: scale(0.95);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.06);
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .logo-showcase {
+        width: 150px;
+        height: 186px;
+      }
+    
+      .logo-card[data-card='1'] {
+        transform: translate3d(-3px, 0, 0) rotateZ(-5deg);
+      }
+    
+      .logo-card[data-card='2'] {
+        transform: translate3d(14px, 18px, 0) rotateZ(6deg);
+      }
+    
+      .logo-showcase.spread .logo-card[data-card='1'] {
+        transform: translate3d(-18px, -10px, 30px) rotateZ(-10deg) scale(1.02);
+      }
+    
+      .logo-showcase.spread .logo-card[data-card='2'] {
+        transform: translate3d(24px, 20px, 30px) rotateZ(10deg) scale(1.02);
+      }
+    }
+
+    .team-section {
+      background: #f5f3f6;
+    }
+
+    .team-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .team-card {
+      border-radius: 0.75rem;
+      border: 1px solid #c4c6ce;
+      border-right: 4px solid #1e3a8a;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+      transition: box-shadow 220ms ease;
+      overflow: hidden;
+      width: 100%;
+      min-height: 165px;
+      padding: 0.9rem 1rem;
+    }
+
+    .team-card:hover {
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
+    }
+
+    .team-avatar-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      padding: 2px;
+      background: #dbeafe;
+    }
+
+    .team-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 2px solid #ffffff;
+      background: #e2e8f0;
+    }
+
+    .team-card-body {
+      padding-top: 0.5rem;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .team-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    .team-name {
+      color: #000f22;
+      font-weight: 600;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      text-align: right;
+    }
+
+    .team-role {
+      margin: 0;
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      gap: 0.3rem;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      border: 1px solid #dbeafe;
+      padding: 0.16rem 0.48rem;
+      font-size: 0.68rem;
+      font-weight: 500;
+    }
+
+    .team-bio {
+      color: #475569;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      margin-top: 0.15rem;
+      text-align: right;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    @media (max-width: 767px) {
+      .team-name,
+      .team-bio {
+        text-align: right;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <main class="grow">
+    <!-- Hero Section with Logos -->
+    <section class="relative w-full h-[calc(100vh-64px)] md:h-[600px] flex items-center overflow-hidden bg-primary-container">
+      <img class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-40" src="{% if home_page_content %}{{ home_page_content.get_hero_background_image_url }}{% else %}{% static 'images/1.png' %}{% endif %}" alt="hero background" />
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 w-full">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+          <!-- Hero Content on Right -->
+          <div class="max-w-2xl w-full text-right md:w-3/4">
+            {% if home_page_content %}
+              <span class="inline-block bg-blue-900/30 text-blue-100 px-4 py-1 rounded-full text-label-sm mb-6 border border-blue-400/30">{{ home_page_content.badge_text }}</span>
+              <h1 class="font-headline-xl text-white mb-6 leading-tight">{{ home_page_content.hero_title }}</h1>
+              <p class="font-body-lg text-blue-100/80 mb-8 max-w-2xl">{{ home_page_content.hero_description }}</p>
+              <div class="flex space-x-reverse space-x-4 gap-4">
+                <a href="{{ home_page_content.primary_button_url }}" class="bg-white text-primary py-2 px-5 md:px-8 md:py-3 rounded-lg font-label-md hover:bg-blue-50 transition-colors">{{ home_page_content.primary_button_text }}</a>
+              </div>
+            {% else %}
+              <!-- Skeleton -->
+              <div class="inline-block w-16 h-4 md:w-32 md:h-7 rounded-full mb-3 md:mb-6 skeleton-pulse"></div>
+              <div class="space-y-2 md:space-y-3 mb-3 md:mb-6">
+                <div class="h-4 md:h-9 w-full rounded-lg skeleton-pulse"></div>
+                <div class="h-4 md:h-9 w-3/4 rounded-lg skeleton-pulse"></div>
+              </div>
+              <div class="space-y-1 md:space-y-2 mb-4 md:mb-8">
+                <div class="h-3 md:h-5 w-full rounded skeleton-pulse"></div>
+                <div class="h-3 md:h-5 w-full rounded skeleton-pulse"></div>
+                <div class="h-3 md:h-5 w-2/3 rounded skeleton-pulse"></div>
+              </div>
+              <div class="h-9 w-35 md:h-11 md:w-44 rounded-lg skeleton-pulse"></div>
+            {% endif %}
+          </div>
+          <!-- Logos Section on Left (Animated Showcase) -->
+          <div class="logo-showcase md:mr-6" id="logoShowcase">
+            <div class="logo-glow" aria-hidden="true"></div>
+            <div class="logo-card p-4 md:p-5" data-card="1">
+              {% if home_page_content and home_page_content.primary_logo_url %}
+              <img src="{{home_page_content.primary_logo_url}}" alt="logo" class="h-24 md:h-32 object-contain drop-shadow-md" />
+              {% endif %}
+            </div>
+            <div class="logo-card p-4 md:p-5" data-card="2">
+              {% if home_page_content and home_page_content.primary_logo_url %}
+              <img src="{{home_page_content.secondary_logo_url}}" alt="logo" class="h-24 md:h-32 object-contain drop-shadow-md" />
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Department Bento Grid -->
+    {% if site_settings.show_specializations %}
+    <section id="specializations" class="max-w-7xl mx-auto px-8 py-xl">
+      <div class="mb-lg">
+        <h2 class="font-headline-lg text-primary mb-2">التخصصات</h2>
+        <div class="h-1 w-20 bg-primary"></div>
+      </div>
+      {% if home_specializations %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for specialization in home_specializations %}
+            <article class="flex h-full flex-col group rounded-xl border border-outline-variant bg-white p-6 shadow-sm hover:shadow-md transition-all">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="bg-primary-container text-on-primary-container p-3 flex items-center justify-center rounded-lg">
+                  <span class="material-symbols-outlined text-3xl">{{ specialization.icon|default:'school' }}</span>
+                </div>
+                <h3 class="font-headline-md text-primary">{{ specialization.name }}</h3>
+              </div>
+              <p class="font-body-md text-on-surface-variant mb-6 flex-1">
+                {% if specialization.description %}
+                  {{ specialization.description }}
+                {% else %}
+                  لا يوجد وصف لهذا التخصص حالياً.
+                {% endif %}
+              </p>
+              <div class="text-center mt-auto">
+                <a href="{% url 'specialization_detail' specialization.slug %}" class="w-full inline-flex justify-center items-center gap-2 bg-primary text-white px-5 py-2 rounded-lg font-label-sm hover:opacity-90 transition-opacity">
+                  الانتقال إلى مقرارات التخصص
+                  <span class="material-symbols-outlined text-lg">arrow_back</span>
+                </a>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center bg-white border border-outline-variant rounded-xl p-8">
+          <p class="font-body-md text-on-surface-variant">لا توجد تخصصات متاحة حالياً.</p>
+        </div>
+      {% endif %}
+    </section>
+    {% endif %}
+    {% if site_settings.show_team %}
+    <!-- Team Section -->
+    <section id="team" class="team-section py-xl">
+      <div class="max-w-7xl mx-auto px-8">
+        <div class="mb-lg">
+          <h2 class="font-headline-lg text-primary mb-2">فريق العمل</h2>
+          <div class="h-1 w-24 bg-primary"></div>
+        </div>
+        {% if team_members %}
+          <div class="team-grid grid-cols-1 sm:grid-cols-2">
+            {% for member in team_members %}
+              <article class="team-card">
+                <div class="team-card-top">
+                  <div class="team-avatar-wrap">
+                    <img src="{{ member.get_image_url }}" alt="{{ member.name }}" class="team-avatar" loading="lazy" />
+                  </div>
+                  <div>
+                    <h3 class="team-name mb-1">{{ member.name }}</h3>
+                    <p class="team-role mt-2">
+                      <span class="material-symbols-outlined" style="font-size:15px;line-height:1;">badge</span>
+                      {{ member.job_title }}
+                    </p>
+                  </div>
+                </div>
+                <div class="team-card-body">
+                  <p class="team-bio">{{ member.bio|default:'عضو في فريق الكلية يعمل على دعم العملية التعليمية والبحثية.' }}</p>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="text-center bg-white border border-outline-variant rounded-xl p-8">
+            <p class="font-body-md text-on-surface-variant">لا توجد بيانات لأعضاء فريق العمل حالياً.</p>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+  </main>
+{% endblock %}
+
+{% block script %}
+  <script>
+    const showcase = document.getElementById('logoShowcase')
+    const cards = showcase ? showcase.querySelectorAll('.logo-card') : []
+    
+    if (showcase && cards.length) {
+      const clearActive = () => {
+        cards.forEach((card) => card.classList.remove('active'))
+      }
+    
+      cards.forEach((card) => {
+        card.addEventListener('mouseenter', function () {
+          showcase.classList.add('spread')
+          clearActive()
+          this.classList.add('active')
+        })
+    
+        card.addEventListener('mouseleave', function () {
+          this.classList.remove('active')
+        })
+      })
+    
+      showcase.addEventListener('mouseleave', function () {
+        showcase.classList.remove('spread')
+        clearActive()
+      })
+    }
+  </script>
+{% endblock %}

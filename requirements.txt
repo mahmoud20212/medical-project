@@ -1,0 +1,6 @@
+Django==5.2.14
+whitenoise==6.9.0
+python-dotenv==1.2.2
+django-tailwind==4.4.2
+django-browser-reload==1.21.0
+psycopg[binary]==3.2.9

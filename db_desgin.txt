@@ -1,0 +1,16 @@
+Specialization
+- icon
+- image_url
+- name
+- slug
+- display_order
+- is_active
+
+Course
+- icon
+- name
+- description
+- academic_year
+- semester
+- level
+- specialization

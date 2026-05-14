@@ -1,0 +1,166 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html dir="rtl" lang="ar" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>{% if site_settings %}{{ site_settings.site_name }}{% else %}كلية العلوم الطبية التطبيقية{% endif %}</title>
+    <meta name="description" content="{% if site_settings and site_settings.site_tagline %}{{ site_settings.site_tagline }}{% else %}كلية العلوم الطبية التطبيقية - التميز السريري والصرامة الأكاديمية.{% endif %}" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: 'Cairo', sans-serif;
+      }
+      
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+
+      .nav-link {
+        padding-bottom: 0.25rem;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .nav-link-inactive {
+        color: #475569;
+      }
+
+      .nav-link-inactive:hover {
+        color: #1e3a8a;
+      }
+
+      .nav-link-active {
+        color: #1e3a8a;
+        border-bottom-color: #1e3a8a;
+      }
+
+      .mobile-nav-link-inactive {
+        color: #475569;
+        transition: color 0.2s ease-in-out;
+      }
+
+      .mobile-nav-link-inactive:hover {
+        color: #1e3a8a;
+      }
+
+      .mobile-nav-link-active {
+        color: #1e3a8a;
+        font-weight: 600;
+      }
+    </style>
+    {% tailwind_css %}
+
+    {% block head %}
+    {% endblock %}
+  </head>
+
+  <body class="bg-background text-on-background min-h-screen flex flex-col">
+    {% include 'partials/header.html' %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% include 'partials/footer.html' %}
+
+    <script>
+      const mobileToggle = document.getElementById('mobile-menu-toggle')
+      const mobileNav = document.getElementById('mobile-nav')
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => {
+          mobileNav.classList.toggle('hidden')
+        })
+      }
+
+      const smoothLinks = document.querySelectorAll('a[href*="#"]')
+      let navScrollLockUntil = 0
+      smoothLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          const href = link.getAttribute('href')
+          if (!href || href === '#') return
+
+          const url = new URL(href, window.location.origin)
+          const isSamePage = url.pathname === window.location.pathname
+          if (!isSamePage || !url.hash) return
+
+          const target = document.querySelector(url.hash)
+          if (!target) return
+
+          event.preventDefault()
+          navScrollLockUntil = Date.now() + 900
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          history.replaceState(null, '', url.hash)
+
+          const sectionKey = url.hash === '#specializations' ? 'specializations' : url.hash === '#team' ? 'team' : null
+          if (sectionKey) {
+            setActiveNav(sectionKey)
+          }
+        })
+      })
+
+      const desktopNavLinks = document.querySelectorAll('[data-nav-link]')
+      const mobileNavLinks = document.querySelectorAll('[data-mobile-nav-link]')
+
+      function setActiveNav(activeKey) {
+        desktopNavLinks.forEach((link) => {
+          const key = link.getAttribute('data-nav-link')
+          link.classList.toggle('nav-link-active', key === activeKey)
+          link.classList.toggle('nav-link-inactive', key !== activeKey)
+        })
+
+        mobileNavLinks.forEach((link) => {
+          const key = link.getAttribute('data-mobile-nav-link')
+          link.classList.toggle('mobile-nav-link-active', key === activeKey)
+          link.classList.toggle('mobile-nav-link-inactive', key !== activeKey)
+        })
+      }
+
+      function getActiveByRouteOrHash() {
+        const path = window.location.pathname.replace(/\/+$/, '') || '/'
+        const hash = window.location.hash
+
+        if (path.startsWith('/resources')) return 'resources'
+        if (hash === '#team') return 'team'
+        if (hash === '#specializations') return 'specializations'
+        return 'home'
+      }
+
+      function updateActiveByScroll() {
+        if (Date.now() < navScrollLockUntil) return
+
+        const path = window.location.pathname.replace(/\/+$/, '') || '/'
+        if (path !== '/') return
+
+        const specializationsSection = document.getElementById('specializations')
+        const teamSection = document.getElementById('team')
+        const scrollPosition = window.scrollY + 130
+
+        if (teamSection && scrollPosition >= teamSection.offsetTop) {
+          setActiveNav('team')
+          return
+        }
+
+        if (specializationsSection && scrollPosition >= specializationsSection.offsetTop) {
+          setActiveNav('specializations')
+          return
+        }
+
+        setActiveNav('home')
+      }
+
+      setActiveNav(getActiveByRouteOrHash())
+      window.addEventListener('hashchange', () => setActiveNav(getActiveByRouteOrHash()))
+      window.addEventListener('scroll', updateActiveByScroll, { passive: true })
+    </script>
+    {% block script %}
+    {% endblock %}
+  </body>
+</html>
