@@ -48,6 +48,8 @@
             <a href="{% url 'specialization_detail' specialization.slug %}" class="text-center block w-full mt-6 py-2 border border-primary text-primary font-bold rounded hover:bg-primary hover:text-white transition-all text-label-md cursor-pointer">عرض الموارد</a>
           </div>
         </div>
+        {% empty %}
+        <p class="text-center text-secondary">لا توجد تخصصات متاحة حالياً.</p>
         {% endfor %}
       </div>
       {% if specializations.paginator.num_pages > 1 %}
