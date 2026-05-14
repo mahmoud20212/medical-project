@@ -1,1 +1,3 @@
-{}
+{
+	"buildCommand": "cd theme/static_src && npm install && npm run build"
+}
