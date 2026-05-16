@@ -28,7 +28,7 @@ def index(request):
   })
 
 def resources(request):
-  specializations = Specialization.objects.annotate(
+  specializations = Specialization.objects.filter(is_active=True).annotate(
     course_count=Count('courses', distinct=True),
     resource_count=Count('courses__resources', distinct=True),
   ).order_by('display_order', 'name')
@@ -43,9 +43,8 @@ def resources(request):
   )
 
 def specialization_detail(request, slug):
-  specializations = Specialization.objects.all()
-  specialization = get_object_or_404(specializations, slug=slug)
-  courses = Course.objects.filter(specializations__slug=slug).distinct()
+  specialization = get_object_or_404(Specialization, slug=slug, is_active=True)
+  courses = Course.objects.filter(specializations=specialization)
 
   selected_year = request.GET.get('year', '').strip()
   selected_semester = request.GET.get('semester', '').strip()
@@ -77,7 +76,6 @@ def specialization_detail(request, slug):
 
   return render(request, 'specialization_detail.html', {
     'specialization': specialization,
-    'specializations': specializations,
     'courses': courses,
     'year_choices': Course.YEAR_CHOICES,
     'semester_choices': Course.SEMESTER_CHOICES,
